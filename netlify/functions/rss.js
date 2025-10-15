@@ -1,6 +1,7 @@
-import Parser from "rss-parser";
-
+// CommonJS version so Netlify bundles cleanly
+const Parser = require("rss-parser");
 const parser = new Parser();
+
 const FEED_MAP = {
   top: "https://feeds.bbci.co.uk/news/rss.xml",
   world: "https://feeds.bbci.co.uk/news/world/rss.xml",
@@ -12,8 +13,8 @@ const FEED_MAP = {
   health: "https://feeds.bbci.co.uk/news/health/rss.xml"
 };
 
-export async function handler(event) {
-  const feedKey = (event.queryStringParameters?.feed || "").toLowerCase();
+exports.handler = async (event) => {
+  const feedKey = (event.queryStringParameters && event.queryStringParameters.feed || "").toLowerCase();
   const url = FEED_MAP[feedKey];
   if (!url) {
     return { statusCode: 400, body: JSON.stringify({ error: "Unknown feed" }) };
@@ -26,16 +27,12 @@ export async function handler(event) {
       link: i.link,
       pubDate: i.isoDate || i.pubDate || null
     }));
-
     return {
       statusCode: 200,
-      headers: {
-        "content-type": "application/json",
-        "cache-control": "public, max-age=180"
-      },
+      headers: { "content-type": "application/json", "cache-control": "public, max-age=180" },
       body: JSON.stringify({ feed: feed.title, items })
     };
-  } catch (err) {
+  } catch (e) {
     return { statusCode: 502, body: JSON.stringify({ error: "RSS error" }) };
   }
-}
+};
