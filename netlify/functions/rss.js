@@ -1,8 +1,6 @@
-// netlify/functions/rss.js
 import Parser from "rss-parser";
 
 const parser = new Parser();
-
 const FEED_MAP = {
   top: "https://feeds.bbci.co.uk/news/rss.xml",
   world: "https://feeds.bbci.co.uk/news/world/rss.xml",
@@ -14,7 +12,7 @@ const FEED_MAP = {
   health: "https://feeds.bbci.co.uk/news/health/rss.xml"
 };
 
-export async function handler(event, context) {
+export async function handler(event) {
   const feedKey = (event.queryStringParameters?.feed || "").toLowerCase();
   const url = FEED_MAP[feedKey];
   if (!url) {
