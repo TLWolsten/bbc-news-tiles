@@ -3,5 +3,4 @@
   functions = "netlify/functions"
 
 [functions]
-  node_bundler = "esbuild"
-  external_node_modules = ["rss-parser"]
+  node_bundler = "esbuild"   # bundle deps INTO the function
