@@ -67,7 +67,7 @@ return el;
 
 
 async function fetchFeed(key){
-const res = await fetch(`https://officenewsfeed.netlify.app/.netlify/functions/rss?feed=${encodeURIComponent(key)}`);
+const res = await fetch(`/.netlify/functions/rss?feed=${encodeURIComponent(key)}`);
 if (!res.ok) throw new Error(`HTTP ${res.status}`);
 return res.json();
 }
